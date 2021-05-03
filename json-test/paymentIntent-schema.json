@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ml.com.co/payment-intent.schema.json",
+  "title": "PaymentIntent",
+  "description": "Description for a PaymentIntent",
+  "type": "object",
+
+  "properties": {
+    "amount": {
+      "description": "The transaction amount",
+      "type": "integer"
+    },
+    "payment_method": {
+      "description": "The way the payer going to pay",
+      "type": "string"
+    },
+    "installments": {
+      "description": "Division of the payment, possibly with additional cost",
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "required": [ "amount" ],
+  "dependencies": {
+    "payment_method": ["installments"]
+  }
+}
