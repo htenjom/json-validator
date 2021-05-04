@@ -12,16 +12,50 @@
     },
     "payment_method": {
       "description": "The way the payer going to pay",
-      "type": "string"
+      "enum": ["credit_card", "debit_card", "voucher"]
     },
     "installments": {
       "description": "Division of the payment, possibly with additional cost",
       "type": "integer",
       "minimum": 0
+    },
+    "site": {
+      "description": "Country code for the tx",
+      "enum": ["MLA", "MLB"]
+    },
+    "language": {
+      "description": "Language to test dependent fields"
     }
   },
   "required": [ "amount" ],
-  "dependencies": {
-    "payment_method": ["installments"]
-  }
+
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "payment_method": {
+            "const": "credit_card"
+          }
+        },
+        "required": ["payment_method"]
+      },
+      "then": {
+        "properties": {
+          "installments": {
+            "minimum": 10,
+            "maximum": 100
+          }
+        },
+        "required": ["installments"]
+      }
+    },
+    {
+      "if": {
+        "required": ["site"]
+      },
+      "then": {
+        "required": ["language"]
+      }
+    }
+  ]
 }
